@@ -11,17 +11,19 @@
                 autoCancel : true // removes the notification from notification centre when clicked
             });
     
-            // triggered when a notification is executed in the foreground
+            // triggered when a notification was clicked outside the app (background)
+            window.plugin.notification.local.onclick = function (id, state, json) {
+                var message = 'ID: ' + id + (json == '' ? '' : '\nData: ' + json);
+                navigator.notification.alert(message, null, 'Notification received while the app was in the background', 'Close');
+            };
+
+            // triggered when a notification is executed while using the app (foreground)
+            // on Android this may be triggered even when the app started by clicking a notification
             window.plugin.notification.local.ontrigger = function (id, state, json) {
                 var message = 'ID: ' + id + (json == '' ? '' : '\nData: ' + json);
                 navigator.notification.alert(message, null, 'Notification received while the app was in the foreground', 'Close');
             };
     
-            // triggered when a notification was clicked outside the app
-            window.plugin.notification.local.onclick = function (id, state, json) {
-                var message = 'ID: ' + id + (json == '' ? '' : '\nData: ' + json);
-                navigator.notification.alert(message, null, 'Notification received while the app was in the background', 'Close');
-            };
         };
     });
 
@@ -58,8 +60,8 @@
         showMessageWithBadge: function () {
             this.notify({
                      id : 4,
-                  title : 'Your icon now has a badge',
-                message : 'Remove it by clicking the \'Cancel all\' button',
+                  title : 'Your app now has a badge',
+                message : 'Clear it by clicking the \'Cancel all\' button',
                   badge : 1,
                    date : this.getNowPlus10Seconds()
             });
@@ -69,8 +71,9 @@
             this.notify({
                      id : 5,
                   title : 'I will bother you every minute',
-                message : '.. until you tap me or cancel all notifications',
+                message : '.. until you cancel all notifications',
                  repeat : 'minutely',
+             autoCancel : false,
                    date : this.getNowPlus10Seconds()
             });
         },
