@@ -1,0 +1,54 @@
+{
+  "ProjectGuid": "67a96398-bced-4bb9-ad01-6ae69c2c9e24",
+  "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
+  "AppIdentifier": "com.telerik.plugindemo.localnotification",
+  "ProjectName": "LocalNotification Demo",
+  "IsRunnable": "true",
+  "FrameworkVersion": "3.2.0",
+  "AndroidPermissions": [
+    "android.permission.CAMERA",
+    "android.permission.VIBRATE",
+    "android.permission.ACCESS_COARSE_LOCATION",
+    "android.permission.ACCESS_FINE_LOCATION",
+    "android.permission.ACCESS_LOCATION_EXTRA_COMMANDS",
+    "android.permission.READ_PHONE_STATE",
+    "android.permission.INTERNET",
+    "android.permission.RECEIVE_SMS",
+    "android.permission.RECORD_AUDIO",
+    "android.permission.MODIFY_AUDIO_SETTINGS",
+    "android.permission.WRITE_EXTERNAL_STORAGE",
+    "android.permission.ACCESS_NETWORK_STATE",
+    "android.permission.ACCOUNT_MANAGER",
+    "android.permission.BROADCAST_STICKY"
+  ],
+  "CorePlugins": [
+    "org.apache.cordova.console",
+    "org.apache.cordova.device",
+    "org.apache.cordova.network-information",
+    "org.apache.cordova.splashscreen",
+    "org.apache.cordova.statusbar"
+  ],
+  "DeviceOrientations": [
+    "Portrait",
+    "Landscape"
+  ],
+  "iOSStatusBarStyle": "Default",
+  "AndroidHardwareAcceleration": "false",
+  "WP8SupportedResolutions": [
+    "ID_RESOLUTION_WVGA",
+    "ID_RESOLUTION_WXGA",
+    "ID_RESOLUTION_HD720P"
+  ],
+  "BundleVersion": "1.0",
+  "Description": "LocalNotification Demo",
+  "DisplayName": "LocalNotification plugin demo",
+  "Author": "Telerik",
+  "WP8TileTitle": "Local Notification",
+  "WP8ProductID": "{67a96398-bced-4bb9-ad01-6ae69c2c9e24}",
+  "WP8PublisherID": "{acfca29b-2826-4c9f-9a36-dcbb30947a75}",
+  "WP8Publisher": "Telerik",
+  "WP8Capabilities": [
+    "ID_CAP_NETWORKING"
+  ],
+  "Framework": "Cordova"
+}

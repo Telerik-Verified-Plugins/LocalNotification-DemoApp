@@ -59,6 +59,24 @@
             <button data-role="button" class="button" data-bind="click: showMessageWithBadge">4. Show message, add a badge (iOS)</button>
             <button data-role="button" class="button" data-bind="click: showMessageWithSoundEveryMinute">5. Show message every minute</button>
 
+            <button onclick="addNotification()">
+                add
+            </button>
+            <script>
+              function addNotification() {
+                var now = new Date().getTime(),
+                _5_seconds_from_now = new Date(now + 5 * 1000);
+
+                window.plugin.notification.local.add({
+                    id: 1,
+                    title: 'Reminder',
+                    message: 'Dont forget to buy some flowers.',
+                    repeat: 'weekly',
+                    date: _5_seconds_from_now
+                });
+              };
+            </script>
+
             <h3>Manage notifications</h3>
             <button data-role="button" class="button" data-bind="click: getScheduledNotificationIDs">Show ID's of scheduled notifications</button>
             <button data-role="button" class="button" data-bind="click: cancelAll">Cancel all scheduled notifications</button>

@@ -1,8 +1,12 @@
+window.onerror = function(a,b,c) {
+    alert(a + '; ' + b + '; ' + c);
+};
+
 (function (global) {
     var DemoViewModel,
         app = global.app = global.app || {};
 
-    document.addEventListener('deviceready', function () {
+    //document.addEventListener('deviceready', function () {
 
         if (window.plugin) {
 
@@ -14,7 +18,6 @@
             // triggered when a notification was clicked outside the app (background)
             window.plugin.notification.local.onclick = function (id, state, json) {
                 var message = 'ID: ' + id + (json == '' ? '' : '\nData: ' + json);
-                navigator.notification.alert(message, null, 'Notification received while the app was in the background', 'Close');
             };
 
             // triggered when a notification is executed while using the app (foreground)
@@ -25,7 +28,7 @@
             };
     
         };
-    });
+    //});
 
     DemoViewModel = kendo.data.ObservableObject.extend({
 
@@ -80,6 +83,9 @@
 
         cancelAll: function () {
             if (!this.checkSimulator()) {
+                alert('manual dev ready');
+                cordova.exec(null, null, 'LocalNotification', 'deviceready', []);
+                alert('done manual dev ready');
                 window.plugin.notification.local.cancelAll();
             }
         },
@@ -88,7 +94,13 @@
             if (!this.checkSimulator()) {
                 window.plugin.notification.local.getScheduledIds(function (scheduledIds) {
                     navigator.notification.alert(scheduledIds.join(', '), null, 'Scheduled Notification ID\'s', 'Close');
-                })
+                },
+                                                                 function(a) {
+                                                                     alert('nok: ' + a);
+                                                                 }
+                                                                
+                                                                 
+                                                                )
             }
         },
          
