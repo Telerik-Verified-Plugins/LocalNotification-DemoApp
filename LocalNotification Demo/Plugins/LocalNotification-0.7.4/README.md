@@ -22,7 +22,7 @@ The purpose of the plugin is to create an platform independent javascript interf
 - **iOS**<br>
 See [Local and Push Notification Programming Guide][ios_notification_guide] for detailed informations and screenshots.
 
-- **Android** *(SDK >=7)*<br>
+- **Android** *(SDK >=11)*<br>
 See [Notification Guide][android_notification_guide] for detailed informations and screenshots.
 
 - **WP8**<br>
@@ -35,7 +35,7 @@ See [Local notifications for Windows Phone][wp8_notification_guide] for detailed
 - [org.apache.cordova.device][apache_device_plugin] *(since v0.6.0)*
 
 
-## Installation
+# Installation
 The plugin can either be installed into the local development environment or cloud based through [PhoneGap Build][PGB].
 
 ### Adding the Plugin to your project
@@ -66,19 +66,6 @@ or to use an specific version:
 <gap:plugin name="de.appplant.cordova.plugin.local-notification" version="0.7.2" />
 ```
 More informations can be found [here][PGB_plugin].
-
-
-## ChangeLog
-#### Version 0.8.0 (not yet released)
-- [enhancement:] Android 2.x (SDK >= 7) support (Thanks to **khizarsonu**)
-- [enhancement:] Scope parameter for `isScheduled` and `getScheduledIds`
-- [enhancement:] Callbacks for `cancel` & `cancelAll`
-- [enhancement:] `image:` accepts remote URLs and local URIs (Android)
-- [feature:] New Android specific `led:` flag
-
-#### Further informations
-- See [CHANGELOG.md][changelog] to get the full changelog for the plugin.
-- See the [v0.8.x TODO List][todo_list] for upcomming changes and other things.
 
 
 ## Using the plugin
@@ -134,9 +121,7 @@ Note that only local notifications with an ID can be canceled.
 - See [getScheduledIds][getscheduledids] of how to retrieve a list of IDs of all scheduled local notifications.
 
 ```javascript
-window.plugin.notification.local.cancel(ID, function () {
-    // The notification has been canceled
-}, scope);
+window.plugin.notification.local.cancel(ID);
 ```
 
 ### Cancel all scheduled local notifications
@@ -147,14 +132,12 @@ The method cancels all local notifications even if they have no ID.
 - See the [oncancel][oncancel] event of how a listener can be registered to be notified when a local notification has been canceled.
 
 ```javascript
-window.plugin.notification.local.cancelAll(function () {
-    // All notifications have been canceled
-}, scope);
+window.plugin.notification.local.cancelAll();
 ```
 
 ### Check wether a notification with an ID is scheduled
 To check if a notification with an ID is scheduled, the `notification.local.isScheduled` interface can be used.<br>
-The method takes the ID of the local notification as an argument and a callback function to be called with the result. Optional the scope of the callback can be assigned too.
+The method takes the ID of the local notification as an argument and a callback function to be called with the result.
 
 #### Further informations
 - See [getScheduledIds][getscheduledids] of how to retrieve a list of IDs of all scheduled local notifications.
@@ -162,17 +145,17 @@ The method takes the ID of the local notification as an argument and a callback 
 ```javascript
 window.plugin.notification.local.isScheduled(id, function (isScheduled) {
     // console.log('Notification with ID ' + id + ' is scheduled: ' + isScheduled);
-}, scope);
+});
 ```
 
 ### Retrieve the IDs from all currently scheduled local notifications
 To retrieve the IDs from all currently scheduled local notifications, the `notification.local.isScheduled` interface can be used.<br>
-The method takes a callback function to be called with the result as an array of IDs. Optional the scope of the callback can be assigned too.
+The method takes a callback function to be called with the result as an array of IDs.
 
 ```javascript
-window.plugin.notification.local.getScheduledIds(function (scheduledIds) {
+window.plugin.notification.local.getScheduledIds( function (scheduledIds) {
     // alert('Scheduled IDs: ' + scheduledIds.join(' ,'));
-}, scope);
+});
 ```
 
 ### Get the default values of the local notification properties
@@ -327,31 +310,16 @@ window.plugin.notification.local.setDefaults({ autoCancel: true });
 ### Small and large icons on Android
 By default all notifications will display the app icon. But an specific icon can be defined through the `icon` and `smallIcon` properties.
 
-#### Resource icons
-The following example shows how to display the `<package.name>.R.drawable.ic_launcher`icon as the notifications icon.
-
 ```javascript
+/**
+ * Displays the <package.name>.R.drawable.ic_launcher icon
+ */
 window.plugin.notification.local.add({ icon: 'ic_launcher' });
-```
 
-See below how to use the `android.R.drawable.ic_dialog_email` icon as the notifications small icon.
-
-```javascript
+/**
+ * Displays the android.R.drawable.ic_dialog_email icon
+ */
 window.plugin.notification.local.add({ smallIcon: 'ic_dialog_email' });
-```
-
-#### Local icons
-The `icon` property also accepts local file URIs. The URI points to a relative path within the www folder.
-
-```javascript
-window.plugin.notification.local.add({ icon: 'file://img/logo.png' }); //=> /assets/www/img/logo.png
-```
-
-#### Remote icons
-The `icon` property also accepts remote URLs. If the device cannot download the image, it will fallback to the app icon.
-
-```javascript
-window.plugin.notification.local.add({ icon: 'https://cordova.apache.org/images/cordova_bot.png' });
 ```
 
 ### Notification sound on Android
@@ -421,13 +389,6 @@ To specify a custom interval, the `repeat` property can be assigned with an numb
 window.plugin.notification.local.add({ repeat: 15 });
 ```
 
-### Change the LED color on Android devices
-The LED color can be specified through the `led` property. By default the color value is white (FFFFFF). Its possible to change that value by setting another hex code.
-
-```javascript
-window.plugin.notification.local.add({ led: 'A0FF05' });
-```
-
 
 ## Quirks
 
@@ -474,7 +435,7 @@ The launch mode for the main activity has to be set to `singleInstance`
 
 ## License
 
-This software is released under the [Apache 2.0 License][apache2_license].
+This software is released under the [Apache 2.0 License](http://opensource.org/licenses/Apache-2.0).
 
 © 2013-2014 appPlant UG, Inc. All rights reserved
 
@@ -487,8 +448,6 @@ This software is released under the [Apache 2.0 License][apache2_license].
 [CLI]: http://cordova.apache.org/docs/en/3.0.0/guide_cli_index.md.html#The%20Command-line%20Interface
 [PGB]: http://docs.build.phonegap.com/en_US/3.3.0/index.html
 [PGB_plugin]: https://build.phonegap.com/plugins/413
-[changelog]: CHANGELOG.md
-[todo_list]: ../../issues/164
 [onadd]: #get-notified-when-a-local-notification-has-been-scheduled
 [onclick]: #get-notified-when-the-user-has-been-clicked-on-a-local-notification
 [oncancel]: #get-notified-when-a-local-notification-has-been-canceled
@@ -503,4 +462,3 @@ This software is released under the [Apache 2.0 License][apache2_license].
 [isscheduled]: #check-wether-a-notification-with-an-id-is-scheduled
 [examples]: #examples
 [setdefaults-example]: #change-the-default-value-of-local-notification-properties
-[apache2_license]: http://opensource.org/licenses/Apache-2.0

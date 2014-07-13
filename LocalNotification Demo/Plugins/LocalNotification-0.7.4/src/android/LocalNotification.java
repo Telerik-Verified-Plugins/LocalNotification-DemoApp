@@ -67,7 +67,7 @@ public class LocalNotification extends CordovaPlugin {
     }
 
     @Override
-    public boolean execute (String action, final JSONArray args, final CallbackContext command) throws JSONException {
+    public boolean execute (String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equalsIgnoreCase("add")) {
             cordova.getThreadPool().execute( new Runnable() {
                 public void run() {
@@ -78,6 +78,8 @@ public class LocalNotification extends CordovaPlugin {
                     add(options, true);
                 }
             });
+
+            return true;
         }
 
         if (action.equalsIgnoreCase("cancel")) {
@@ -87,9 +89,10 @@ public class LocalNotification extends CordovaPlugin {
 
                     cancel(id);
                     unpersist(id);
-                    command.success();
                 }
             });
+
+            return true;
         }
 
         if (action.equalsIgnoreCase("cancelAll")) {
@@ -97,19 +100,24 @@ public class LocalNotification extends CordovaPlugin {
                 public void run() {
                     cancelAll();
                     unpersistAll();
-                    command.success();
                 }
             });
+
+            return true;
         }
 
         if (action.equalsIgnoreCase("isScheduled")) {
             String id = args.optString(0);
 
-            isScheduled(id, command);
+            isScheduled(id, callbackContext);
+
+            return true;
         }
 
         if (action.equalsIgnoreCase("getScheduledIds")) {
-            getScheduledIds(command);
+            getScheduledIds(callbackContext);
+
+            return true;
         }
 
         if (action.equalsIgnoreCase("deviceready")) {
@@ -118,17 +126,24 @@ public class LocalNotification extends CordovaPlugin {
                     deviceready();
                 }
             });
+
+            return true;
         }
 
         if (action.equalsIgnoreCase("pause")) {
             isInBackground = true;
+
+            return true;
         }
 
         if (action.equalsIgnoreCase("resume")) {
             isInBackground = false;
+
+            return true;
         }
 
-        return true;
+        // Returning false results in a "MethodNotFound" error.
+        return false;
     }
 
     /**
@@ -186,7 +201,7 @@ public class LocalNotification extends CordovaPlugin {
         Intent intent = new Intent(context, Receiver.class)
             .setAction("" + notificationId);
 
-        PendingIntent pi       = PendingIntent.getBroadcast(context, 0, intent, 0);
+        PendingIntent pi       = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager am        = getAlarmManager();
         NotificationManager nc = getNotificationManager();
 
@@ -227,13 +242,13 @@ public class LocalNotification extends CordovaPlugin {
      *          The notification ID to be check.
      * @param callbackContext
      */
-    public static void isScheduled (String id, CallbackContext command) {
+    public static void isScheduled (String id, CallbackContext callbackContext) {
         SharedPreferences settings = getSharedPreferences();
         Map<String, ?> alarms      = settings.getAll();
         boolean isScheduled        = alarms.containsKey(id);
         PluginResult result        = new PluginResult(PluginResult.Status.OK, isScheduled);
 
-        command.sendPluginResult(result);
+        callbackContext.sendPluginResult(result);
     }
 
     /**
@@ -241,13 +256,13 @@ public class LocalNotification extends CordovaPlugin {
      *
      * @param callbackContext
      */
-    public static void getScheduledIds (CallbackContext command) {
+    public static void getScheduledIds (CallbackContext callbackContext) {
         SharedPreferences settings = getSharedPreferences();
         Map<String, ?> alarms      = settings.getAll();
         Set<String> alarmIds       = alarms.keySet();
         JSONArray pendingIds       = new JSONArray(alarmIds);
 
-        command.success(pendingIds);
+        callbackContext.success(pendingIds);
     }
 
     /**

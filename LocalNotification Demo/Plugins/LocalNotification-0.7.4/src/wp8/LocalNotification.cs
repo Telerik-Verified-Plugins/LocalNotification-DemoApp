@@ -84,7 +84,6 @@ namespace Cordova.Extension.Commands
             cancelAll(jsonArgs);
 
             FireEvent("cancel", notificationID, "");
-            DispatchCommandResult();
         }
 
         /// <summary>

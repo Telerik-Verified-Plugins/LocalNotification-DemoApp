@@ -1,13 +1,8 @@
-window.onerror = function(a,b,c) {
-    alert(a + '; ' + b + '; ' + c);
-};
-
 (function (global) {
     var DemoViewModel,
         app = global.app = global.app || {};
 
-    //document.addEventListener('deviceready', function () {
-
+    document.addEventListener('deviceready', function () {
         if (window.plugin) {
 
             // set some global defaults for all local notifications
@@ -28,7 +23,7 @@ window.onerror = function(a,b,c) {
             };
     
         };
-    //});
+    });
 
     DemoViewModel = kendo.data.ObservableObject.extend({
 
@@ -83,10 +78,7 @@ window.onerror = function(a,b,c) {
 
         cancelAll: function () {
             if (!this.checkSimulator()) {
-                alert('manual dev ready');
-                cordova.exec(null, null, 'LocalNotification', 'deviceready', []);
-                alert('done manual dev ready');
-                window.plugin.notification.local.cancelAll();
+                window.plugin.notification.local.cancelAll(function() {alert('ok, all cancelled')});
             }
         },
          
@@ -94,19 +86,13 @@ window.onerror = function(a,b,c) {
             if (!this.checkSimulator()) {
                 window.plugin.notification.local.getScheduledIds(function (scheduledIds) {
                     navigator.notification.alert(scheduledIds.join(', '), null, 'Scheduled Notification ID\'s', 'Close');
-                },
-                                                                 function(a) {
-                                                                     alert('nok: ' + a);
-                                                                 }
-                                                                
-                                                                 
-                                                                )
+                })
             }
         },
          
         notify: function (payload) {
             if (!this.checkSimulator()) {
-                window.plugin.notification.local.add(payload);
+                window.plugin.notification.local.add(payload, function(){alert('ok, scheduled')});
             }
         },
 

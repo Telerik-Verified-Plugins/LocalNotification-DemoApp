@@ -1,11 +1,4 @@
 ## ChangeLog
-#### Version 0.8.0 (not yet released)
-- [enhancement:] Android 2.x (SDK >= 7) support (Thanks to **khizarsonu**)
-- [enhancement:] Scope parameter for `isScheduled` and `getScheduledIds`
-- [enhancement:] Callbacks for `cancel` & `cancelAll`
-- [enhancement:] `image:` accepts remote URLs and local URIs (Android)
-- [feature:] New Android specific `led:` flag.
-
 #### Version 0.7.4 (22.03.2014)
 - [bugfix:] Platform specific properties were ignored.
 - [bugfix:] `cancel` may throw an error if the OS returns NIL values (iOS).

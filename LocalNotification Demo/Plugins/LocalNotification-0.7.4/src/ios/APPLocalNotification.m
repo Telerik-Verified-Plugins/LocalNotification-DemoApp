@@ -53,8 +53,6 @@
 - (NSString*) applicationState;
 // Retrieves all scheduled notifications
 - (NSArray*) scheduledNotifications;
-// Simply invokes the callback without any parameter
-- (void) execCallback:(CDVInvokedUrlCommand*)command;
 // Fires the given event
 - (void) fireEvent:(NSString*)event id:(NSString*)id json:(NSString*)json;
 
@@ -135,8 +133,6 @@
         if (notification) {
             [self cancelNotification:notification fireEvent:YES];
         }
-
-        [self execCallback:command];
     }];
 }
 
@@ -157,8 +153,6 @@
 
         [[UIApplication sharedApplication]
          setApplicationIconBadgeNumber:0];
-
-        [self execCallback:command];
     }];
 }
 
@@ -564,18 +558,6 @@
     }
 
     return notificationsWithoutNIL;
-}
-
-/**
- * Simply invokes the callback without any parameter.
- */
-- (void) execCallback:(CDVInvokedUrlCommand*)command
-{
-    CDVPluginResult *result = [CDVPluginResult
-                               resultWithStatus:CDVCommandStatus_OK];
-
-    [self.commandDelegate sendPluginResult:result
-                                callbackId:command.callbackId];
 }
 
 /**

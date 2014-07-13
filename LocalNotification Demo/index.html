@@ -38,7 +38,7 @@
         </p>
         <p>
             Custom plugins don't work in the simulator and the AppBuilder companion app,
-            so inside Telerik AppBuilder choose Run - Build - iOS/Android/Windows Phone - App package.
+            so inside Telerik AppBuilder choose Run - Build - iOS/Android - App package.
         </p>
     </div>
 
@@ -58,24 +58,6 @@
             <button data-role="button" class="button" data-bind="click: showMessageWithData">3. Show message with data</button>
             <button data-role="button" class="button" data-bind="click: showMessageWithBadge">4. Show message, add a badge (iOS)</button>
             <button data-role="button" class="button" data-bind="click: showMessageWithSoundEveryMinute">5. Show message every minute</button>
-
-            <button onclick="addNotification()">
-                add
-            </button>
-            <script>
-              function addNotification() {
-                var now = new Date().getTime(),
-                _5_seconds_from_now = new Date(now + 5 * 1000);
-
-                window.plugin.notification.local.add({
-                    id: 1,
-                    title: 'Reminder',
-                    message: 'Dont forget to buy some flowers.',
-                    repeat: 'weekly',
-                    date: _5_seconds_from_now
-                });
-              };
-            </script>
 
             <h3>Manage notifications</h3>
             <button data-role="button" class="button" data-bind="click: getScheduledNotificationIDs">Show ID's of scheduled notifications</button>
