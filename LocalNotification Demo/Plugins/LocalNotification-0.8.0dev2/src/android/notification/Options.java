@@ -19,37 +19,40 @@
     under the License.
 */
 
-package de.appplant.cordova.plugin.localnotification;
+package de.appplant.cordova.plugin.notification;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.content.Context;
-import android.media.RingtoneManager;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 
 /**
  * Class that helps to store the options that can be specified per alarm.
  */
 public class Options {
-
     private JSONObject options = new JSONObject();
     private String packageName = null;
     private long interval      = 0;
+    private Context context;
 
-    Options (Activity activity) {
-        packageName = activity.getPackageName();
+
+
+    public Options(Context context){
+    	this.context= context;
+    	this.packageName = context.getPackageName();
     }
-
-    Options (Context context) {
-        packageName = context.getPackageName();
-    }
-
+    
+    
     /**
      * Parses the given properties
      */
@@ -91,7 +94,7 @@ public class Options {
 
         return this;
     }
-
+    
     /**
      * Returns options as JSON object
      */
@@ -104,6 +107,13 @@ public class Options {
      */
     public long getDate() {
         return options.optLong("date", 0) * 1000;
+    }
+    
+    /**
+     * Returns time in milliseconds when the notification was scheduled first
+     */
+    public long getInitialDate() {
+    	return options.optLong("initialDate", 0);
     }
 
     /**
@@ -135,39 +145,30 @@ public class Options {
      * Returns the path of the notification's sound file
      */
     public Uri getSound () {
-        String sound = options.optString("sound", null);
-
-        if (sound != null) {
-            try {
-                int soundId = (Integer) RingtoneManager.class.getDeclaredField(sound).get(Integer.class);
-
-                return RingtoneManager.getDefaultUri(soundId);
-            } catch (Exception e) {
-                return Uri.parse(sound);
-            }
+        Uri soundUri = null;
+        try{
+        	soundUri = Uri.parse(options.optString("soundUri"));
+        	return soundUri;
+        } catch (Exception e){
+        	e.printStackTrace();
         }
-
         return null;
     }
 
     /**
      * Returns the icon's ID
      */
-    public int getIcon () {
-        int icon        = 0;
-        String iconName = options.optString("icon", "icon");
-
-        icon = getIconValue(packageName, iconName);
-
-        if (icon == 0) {
-            icon = getIconValue("android", iconName);
+    public Bitmap getIcon () {
+        String icon = options.optString("icon", "icon");
+        Bitmap bmp = null;
+        Uri iconUri = null;
+        try{
+        	iconUri = Uri.parse(options.optString("iconUri"));
+            bmp = getIconFromUri(iconUri);
+        } catch (Exception e){
+        	bmp = getIconFromRes(icon);
         }
-
-        if (icon == 0) {
-            icon = android.R.drawable.ic_menu_info_details;
-        }
-
-        return options.optInt("icon", icon);
+        return bmp;
     }
 
     /**
@@ -184,7 +185,7 @@ public class Options {
         }
 
         if (resId == 0) {
-            resId = getIcon();
+            resId = getIconValue(packageName, "icon");
         }
 
         return options.optInt("smallIcon", resId);
@@ -233,6 +234,27 @@ public class Options {
     }
 
     /**
+     * @return
+     *      The notification color for LED
+     */
+   public int getColor () {
+        String hexColor = options.optString("led", "000000");
+        int aRGB        = Integer.parseInt(hexColor,16);
+
+        aRGB += 0xFF000000;
+
+        return aRGB;
+    }
+   
+	/**
+	 * Shows the behavior of notifications when the application is in foreground 
+	 * 
+	 */
+	public boolean getForegroundMode(){
+		return options.optBoolean("foregroundMode",false);	
+	}
+
+    /**
      * Returns numerical icon Value
      *
      * @param {String} className
@@ -249,4 +271,63 @@ public class Options {
 
         return icon;
     }
+
+    /**
+     * Converts an resource to Bitmap.
+     *
+     * @param icon
+     *      The resource name
+     * @return
+     *      The corresponding bitmap
+     */
+    private Bitmap getIconFromRes (String icon) {
+        Resources res = context.getResources();
+        int iconId = 0;
+
+        iconId = getIconValue(packageName, icon);
+
+        if (iconId == 0) {
+            iconId = getIconValue("android", icon);
+        }
+
+        if (iconId == 0) {
+            iconId = android.R.drawable.ic_menu_info_details;
+        }
+
+        Bitmap bmp = BitmapFactory.decodeResource(res, iconId);
+
+        return bmp;
+    }
+
+
+
+    /**
+     * Converts an Image URI to Bitmap.
+     *
+     * @param src
+     *      The internal image URI
+     * @return
+     *      The corresponding bitmap
+     */
+    private Bitmap getIconFromUri (Uri uri) throws IOException {
+        Bitmap bmp = null;
+          
+        InputStream input = context.getContentResolver().openInputStream(uri);
+        bmp = BitmapFactory.decodeStream(input);
+
+        return bmp;
+    }
+    
+    /**
+     * Function to set the value of "initialDate" in the JSONArray
+     */
+    public void setInitDate(){
+    	long initialDate = options.optLong("date", 0) * 1000;
+    	try {
+    		options.put("initialDate", initialDate);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+    }
+	
 }

@@ -4,7 +4,7 @@
   "AppIdentifier": "com.telerik.plugindemo.localnotification",
   "ProjectName": "LocalNotification Demo",
   "IsRunnable": "true",
-  "FrameworkVersion": "3.5.0",
+  "FrameworkVersion": "3.7.0",
   "AndroidPermissions": [
     "android.permission.CAMERA",
     "android.permission.VIBRATE",
@@ -51,5 +51,6 @@
   "WP8Capabilities": [
     "ID_CAP_NETWORKING"
   ],
-  "Framework": "Cordova"
+  "Framework": "Cordova",
+  "projectVersion": "1"
 }

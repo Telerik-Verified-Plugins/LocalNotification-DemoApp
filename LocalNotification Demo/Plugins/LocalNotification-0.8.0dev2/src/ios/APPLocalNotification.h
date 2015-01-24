@@ -24,17 +24,42 @@
 
 @interface APPLocalNotification : CDVPlugin
 
-// Executes all queued events
+// Execute all queued events
 - (void) deviceready:(CDVInvokedUrlCommand*)command;
-// Schedules a new local notification
+
+// Inform if the app has the permission to show notifications
+- (void) hasPermission:(CDVInvokedUrlCommand*)command;
+// Register permission to show notifications
+- (void) registerPermission:(CDVInvokedUrlCommand*)command;
+
+// Schedule a new notification
 - (void) add:(CDVInvokedUrlCommand*)command;
-// Cancels a given local notification
+// Update a notification
+- (void) update:(CDVInvokedUrlCommand*)command;
+// Cancel a given notification
 - (void) cancel:(CDVInvokedUrlCommand*)command;
-// Cancels all currently scheduled notifications
+// Cancel all currently scheduled notifications
 - (void) cancelAll:(CDVInvokedUrlCommand*)command;
-// Checks wether a notification with an ID is scheduled
+
+// If a notification with an ID exists
+- (void) exist:(CDVInvokedUrlCommand*)command;
+// If a notification with an ID was scheduled
 - (void) isScheduled:(CDVInvokedUrlCommand*)command;
-// Retrieves a list of ids from all currently pending notifications
+// If a notification with an ID was triggered
+- (void) isTriggered:(CDVInvokedUrlCommand*)command;
+
+// List all ids from all local notifications
+- (void) getAllIds:(CDVInvokedUrlCommand*)command;
+// List all ids from all pending notifications
 - (void) getScheduledIds:(CDVInvokedUrlCommand*)command;
+// List all ids from all triggered notifications
+- (void) getTriggeredIds:(CDVInvokedUrlCommand*)command;
+
+// Property list for given local notifications
+- (void) getAll:(CDVInvokedUrlCommand*)command;
+// Property list for given scheduled notifications
+- (void) getScheduled:(CDVInvokedUrlCommand*)command;
+// Property list for given triggered notifications
+- (void) getTriggered:(CDVInvokedUrlCommand*)command;
 
 @end

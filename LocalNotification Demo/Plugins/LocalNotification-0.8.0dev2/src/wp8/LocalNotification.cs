@@ -84,6 +84,7 @@ namespace Cordova.Extension.Commands
             cancelAll(jsonArgs);
 
             FireEvent("cancel", notificationID, "");
+            DispatchCommandResult();
         }
 
         /// <summary>
@@ -128,6 +129,22 @@ namespace Cordova.Extension.Commands
         /// Retrieves a list with all currently pending notifications
         /// </summary>
         public void getScheduledIds (string jsonArgs)
+        {
+            DispatchCommandResult();
+        }
+
+        /// <summary>
+        /// Checks wether a notification with an ID was triggered
+        /// </summary>
+        public void isTriggered (string jsonArgs)
+        {
+            DispatchCommandResult();
+        }
+
+        /// <summary>
+        /// Retrieves a list with all currently triggered notifications
+        /// </summary>
+        public void getTriggeredIds (string jsonArgs)
         {
             DispatchCommandResult();
         }
