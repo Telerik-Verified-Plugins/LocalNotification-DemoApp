@@ -62,7 +62,7 @@ public class LocalNotification extends CordovaPlugin {
     Asset asset;
     Manager manager;
     NotificationWrapper nWrapper;
-    
+
     @Override
     public void initialize (CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
@@ -76,16 +76,16 @@ public class LocalNotification extends CordovaPlugin {
     }
     @Override
     public boolean execute (String action, final JSONArray args, final CallbackContext command) throws JSONException {
-    	
+
         if (action.equalsIgnoreCase("add")) {
             cordova.getThreadPool().execute( new Runnable() {
-                public void run() { 
+                public void run() {
                 	add(args);
                     command.success();
                 }
             });
         }
-        
+
         if (action.equalsIgnoreCase("update")) {
         	cordova.getThreadPool().execute( new Runnable() {
                 public void run() {
@@ -94,13 +94,13 @@ public class LocalNotification extends CordovaPlugin {
                 }
             });
         }
-        
+
         if (action.equalsIgnoreCase("cancel")) {
             cordova.getThreadPool().execute( new Runnable() {
                 public void run() {
                 	cancel(args);
                     command.success();
-                    
+
                 }
             });
         }
@@ -113,7 +113,7 @@ public class LocalNotification extends CordovaPlugin {
                 }
             });
         }
-        
+
         if (action.equalsIgnoreCase("clear")) {
         	cordova.getThreadPool().execute( new Runnable() {
                 public void run() {
@@ -122,7 +122,7 @@ public class LocalNotification extends CordovaPlugin {
                 }
             });
         }
-        
+
         if (action.equalsIgnoreCase("clearAll")) {
         	cordova.getThreadPool().execute( new Runnable() {
                 public void run() {
@@ -134,18 +134,18 @@ public class LocalNotification extends CordovaPlugin {
 
         if (action.equalsIgnoreCase("isScheduled")) {
             String id = args.optString(0);
-        	boolean isScheduled = manager.isScheduled(id);        
+        	boolean isScheduled = manager.isScheduled(id);
             PluginResult result        = new PluginResult(PluginResult.Status.OK, (isScheduled));
             command.sendPluginResult(result);
         }
-        
+
         if (action.equalsIgnoreCase("isTriggered")) {
             String id = args.optString(0);
             boolean isTriggered        = manager.isTriggered(id);
             PluginResult result = new PluginResult(PluginResult.Status.OK, isTriggered);
             command.sendPluginResult(result);
         }
-        
+
         if (action.equalsIgnoreCase("exist")) {
             String id = args.optString(0);
             boolean exist        = manager.exist(id);
@@ -162,12 +162,12 @@ public class LocalNotification extends CordovaPlugin {
             JSONArray triggeredIds     = manager.getTriggeredIds();
             command.success(triggeredIds);
         }
-        
+
         if (action.equalsIgnoreCase("getAllIds")) {
             JSONArray allIds     = manager.getAllIds();
             command.success(allIds);
         }
-        
+
         if (action.equalsIgnoreCase("getAll")) {
         	JSONArray ids;
         	JSONArray all;
@@ -179,7 +179,7 @@ public class LocalNotification extends CordovaPlugin {
         	}
         	command.success(all);
         }
-        
+
         if (action.equalsIgnoreCase("getTriggered")) {
         	JSONArray ids;
         	JSONArray triggered;
@@ -191,7 +191,7 @@ public class LocalNotification extends CordovaPlugin {
         	}
         	command.success(triggered);
         }
-        
+
         if (action.equalsIgnoreCase("getScheduled")) {
         	JSONArray ids;
         	JSONArray scheduled;
@@ -222,8 +222,8 @@ public class LocalNotification extends CordovaPlugin {
 
         return true;
     }
-    
-    
+
+
     //------------------------------------------------exec-Functions-----------------------------------------------
     /**
      * Schedule notifications contained in the args-Array
@@ -240,9 +240,9 @@ public class LocalNotification extends CordovaPlugin {
         	nWrapper.schedule(options);
         	JSONArray fireData= new JSONArray().put(options.getJSONObject());
         	fireEvent("add", options.getId(),options.getJSON(), fireData);
-    	}     	
+    	}
     }
-    
+
     /**
      * Update existing notifications
      * @param args
@@ -252,11 +252,11 @@ public class LocalNotification extends CordovaPlugin {
     	JSONObject updateContent;
     	for(int i=0;i<updates.length();i++){
     		updateContent = args.optJSONObject(i);
-    	
+
     		nWrapper.update(updateContent);
     	}
     }
-    
+
     /**
      * Cancel scheduled Notifications
      * @param args
@@ -272,7 +272,7 @@ public class LocalNotification extends CordovaPlugin {
             fireEvent("cancel", id, "",data);
     	}
     }
-    
+
     /**
      * Cancel all scheduled notifications
      * @param args
@@ -289,7 +289,7 @@ public class LocalNotification extends CordovaPlugin {
           	fireEvent("cancel", id, "",data);
         }
     }
-    
+
     /**
      * Clear triggered notifications without cancel repeating.
      * @param args
@@ -305,7 +305,7 @@ public class LocalNotification extends CordovaPlugin {
             fireEvent("clear", id, "",data);
     	}
     }
-    
+
     /**
      * Clear all triggered notifications without cancel repeating.
      * @param args
@@ -322,11 +322,11 @@ public class LocalNotification extends CordovaPlugin {
           	fireEvent("clear", id, "",data);
         }
     }
-    
 
-    
-    
-    
+
+
+
+
     //-------------------------------------------------------------------------------------------------------------
     /**
      * Calls all pending callbacks after the deviceready event has been fired.
@@ -431,8 +431,8 @@ public class LocalNotification extends CordovaPlugin {
     public static void fireEvent (String event, String id, String json, JSONArray data) {
     	String state = getApplicationState();
     	String params = "\"" + id + "\",\"" + state + "\"," + JSONObject.quote(json)+","+ data;
-    	String js = "setTimeout('plugin.notification.local.on" + event + "(" + params + ")',0)";
-    
+    	String js = "plugin.notification.local.on" + event + "(" + params + ")";
+
     	// webview may available, but callbacks needs to be executed
     	// after deviceready
     	if (deviceready == false) {
@@ -441,9 +441,9 @@ public class LocalNotification extends CordovaPlugin {
     		sendJavascript(js);
     	}
     }
-    
-    
-    
+
+
+
     /**
      * Retrieves the application state
      *
@@ -483,8 +483,8 @@ public class LocalNotification extends CordovaPlugin {
     protected static NotificationManager getNotificationManager () {
         return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
-    
-    
+
+
    /**
     * Use this instead of deprecated sendJavascript
     */
@@ -500,6 +500,6 @@ public class LocalNotification extends CordovaPlugin {
 		   }
 	   });
    }
-    
-  
+
+
 }

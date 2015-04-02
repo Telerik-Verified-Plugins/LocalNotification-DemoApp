@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="de.appplant.cordova.plugin.local-notification"
-        version="0.8.0dev">
+        version="0.8.0dev4">
 
     <name>LocalNotification</name>
 
@@ -18,7 +18,7 @@
         <engine name="cordova" version=">=3.0.0" />
     </engines>
 
-    <dependency id="org.apache.cordova.device" url="https://github.com/apache/cordova-plugin-device" />
+    <dependency id="org.apache.cordova.device" />
 
     <js-module src="www/local-notification.js" name="LocalNotification">
         <clobbers target="cordova.plugins.notification.local" />
