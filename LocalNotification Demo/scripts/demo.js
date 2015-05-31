@@ -3,26 +3,27 @@
         app = global.app = global.app || {};
 
     document.addEventListener('deviceready', function () {
-        if (window.plugin) {
+        if (cordova.plugins) {
 
             // set some global defaults for all local notifications
-            window.plugin.notification.local.setDefaults({
+            cordova.plugins.notification.local.setDefaults({
                 ongoing : false, // see http://developer.android.com/reference/android/support/v4/app/NotificationCompat.Builder.html#setOngoing(boolean)
 								autoClear: true
             });
     
-					 	window.plugin.notification.local.on("click", function (id, state, json) {
-                navigator.notification.alert("Clicked: " + id, null, 'Notification background click', 'Close');
+					 	cordova.plugins.notification.local.on("click", function (notification ) {
+                navigator.notification.alert(JSON.stringify(notification), null, 'Notification background click', 'Close');
             });
 
-	          window.plugin.notification.local.on("schedule", function (id, state, json) {
+	          cordova.plugins.notification.local.on("schedule", function (id, state, json) {
                 navigator.notification.alert("Scheduled", null, 'Notification scheduled', 'Close');
             });
 
            	// On iOS this event doesn't fire when the app is coldstarted, use "click" above instead in that case
-	          window.plugin.notification.local.on("trigger", function (notification, state) {
+	          cordova.plugins.notification.local.on("trigger", function (notification, state) {
                 var message = 'Notification with ID is triggered: ' + notification.id + ' state: ' + state;
 								navigator.notification.alert(message, function() { // callback invoked when the alert dialog is dismissed
+                  // if the app started without clicking the notification, it can be cleared like this:
 				    			cordova.plugins.notification.local.clear(notification.id, function() {
 						        navigator.notification.alert("Notification cleared from notification center");
 					    		}, 'Notification triggered', 'Close');
@@ -84,13 +85,13 @@
 
         cancelAll: function () {
             if (!this.checkSimulator()) {
-                window.plugin.notification.local.cancelAll(function() {alert('ok, all cancelled')});
+                cordova.plugins.notification.local.cancelAll(function() {alert('ok, all cancelled')});
             }
         },
          
         getScheduledNotificationIDs: function () {
             if (!this.checkSimulator()) {
-                window.plugin.notification.local.getScheduledIds(function (scheduledIds) {
+                cordova.plugins.notification.local.getScheduledIds(function (scheduledIds) {
                     navigator.notification.alert(scheduledIds.join(', '), null, 'Scheduled Notification ID\'s', 'Close');
                 })
             }
@@ -98,7 +99,7 @@
          
         notify: function (payload) {
             if (!this.checkSimulator()) {
-                window.plugin.notification.local.schedule(payload, function(){console.log('scheduled')});
+                cordova.plugins.notification.local.schedule(payload, function(){console.log('scheduled')});
             }
         },
 
@@ -110,7 +111,7 @@
             if (window.navigator.simulator === true) {
                 alert('This plugin is not available in the simulator.');
                 return true;
-            } else if (window.plugin === undefined) {
+            } else if (cordova.plugins === undefined || cordova.plugins.notification === undefined) {
                 alert('Plugin not found. Maybe you are running in AppBuilder Companion app which currently does not support this plugin.');
                 return true;
             } else {
