@@ -7,21 +7,22 @@
 
             // set some global defaults for all local notifications
             window.plugin.notification.local.setDefaults({
-                autoCancel : true // removes the notification from notification centre when clicked
+                ongoing : false, // see http://developer.android.com/reference/android/support/v4/app/NotificationCompat.Builder.html#setOngoing(boolean)
+								autoClear: true
             });
     
-            // triggered when a notification was clicked outside the app (background)
-            window.plugin.notification.local.onclick = function (id, state, json) {
-                var message = 'ID: ' + id + (json == '' ? '' : '\nData: ' + json);
-            };
+					 	window.plugin.notification.local.on("schedule", function (id, state, json) {
+                navigator.notification.alert("Scheduled", null, 'Notification scheduled', 'Close');
+            });
 
-            // triggered when a notification is executed while using the app (foreground)
-            // on Android this may be triggered even when the app started by clicking a notification
-            window.plugin.notification.local.ontrigger = function (id, state, json) {
-                var message = 'ID: ' + id + (json == '' ? '' : '\nData: ' + json);
-                navigator.notification.alert(message, null, 'Notification received while the app was in the foreground', 'Close');
-            };
-    
+            window.plugin.notification.local.on("trigger", function (notification, state) {
+                var message = 'Notification with ID is triggered: ' + notification.id + ' state: ' + state;
+								navigator.notification.alert(message, function() { // callback invoked when the alert dialog is dismissed
+				    			cordova.plugins.notification.local.clear(notification.id, function() {
+						        navigator.notification.alert("Notification cleared from notification center");
+					    		}, 'Notification triggered', 'Close');
+								});
+						});
         };
     });
 
@@ -31,9 +32,9 @@
             this.notify({
                      id : 1,
                   title : 'I\'m the title!',
-                message : 'Sssssh!',
+                   text : 'Sssssh!',
                   sound : null,
-                   date : this.getNowPlus10Seconds()
+                     at : this.getNowPlus10Seconds()
             });
         },
 
@@ -41,17 +42,17 @@
             this.notify({
                      id : '2', // you don't have to use an int by the way.. '1a' or just 'a' would be fine
                   title : 'Sorry for the noise',
-                message : 'Unless you have sound turned off',
-                   date : this.getNowPlus10Seconds()
+                   text : 'Unless you have sound turned off',
+                     at : this.getNowPlus10Seconds()
             });
         },
 
         showMessageWithData: function () {
             this.notify({
                      id : 3,
-                message : 'I have data, click me to see it',
+                   text : 'I have data, click me to see it',
                    json : JSON.stringify({ test: 123 }),
-                   date : this.getNowPlus10Seconds()
+                     at : this.getNowPlus10Seconds()
             });
         },
 
@@ -59,9 +60,9 @@
             this.notify({
                      id : 4,
                   title : 'Your app now has a badge',
-                message : 'Clear it by clicking the \'Cancel all\' button',
+                   text : 'Clear it by clicking the \'Cancel all\' button',
                   badge : 1,
-                   date : this.getNowPlus10Seconds()
+                     at : this.getNowPlus10Seconds()
             });
         },
 
@@ -69,10 +70,10 @@
             this.notify({
                      id : 5,
                   title : 'I will bother you every minute',
-                message : '.. until you cancel all notifications',
-                 repeat : 'minutely',
-             autoCancel : false,
-                   date : this.getNowPlus10Seconds()
+                   text : '.. until you cancel all notifications',
+                  every : 'minute',
+              autoClear : false,
+                     at : this.getNowPlus10Seconds()
             });
         },
 
@@ -92,7 +93,7 @@
          
         notify: function (payload) {
             if (!this.checkSimulator()) {
-                window.plugin.notification.local.add(payload, function(){alert('ok, scheduled')});
+                window.plugin.notification.local.schedule(payload, function(){console.log('scheduled')});
             }
         },
 

@@ -4,22 +4,15 @@
   "AppIdentifier": "com.telerik.plugindemo.localnotification",
   "ProjectName": "LocalNotification Demo",
   "IsRunnable": "true",
-  "FrameworkVersion": "3.7.0",
+  "FrameworkVersion": "3.8.0",
   "AndroidPermissions": [
-    "android.permission.CAMERA",
-    "android.permission.VIBRATE",
-    "android.permission.ACCESS_COARSE_LOCATION",
-    "android.permission.ACCESS_FINE_LOCATION",
-    "android.permission.ACCESS_LOCATION_EXTRA_COMMANDS",
-    "android.permission.READ_PHONE_STATE",
-    "android.permission.INTERNET",
-    "android.permission.RECEIVE_SMS",
-    "android.permission.RECORD_AUDIO",
-    "android.permission.MODIFY_AUDIO_SETTINGS",
-    "android.permission.WRITE_EXTERNAL_STORAGE",
     "android.permission.ACCESS_NETWORK_STATE",
     "android.permission.ACCOUNT_MANAGER",
-    "android.permission.BROADCAST_STICKY"
+    "android.permission.BROADCAST_STICKY",
+    "android.permission.INTERNET",
+    "android.permission.READ_PHONE_STATE",
+    "android.permission.VIBRATE",
+    "android.permission.WRITE_EXTERNAL_STORAGE"
   ],
   "CorePlugins": [
     "org.apache.cordova.console",
@@ -40,7 +33,7 @@
     "ID_RESOLUTION_WXGA",
     "ID_RESOLUTION_HD720P"
   ],
-  "BundleVersion": "1.0",
+  "BundleVersion": "1.1.0",
   "Description": "LocalNotification Demo",
   "DisplayName": "LocalNotification plugin demo",
   "Author": "Telerik",
@@ -54,5 +47,6 @@
   "Framework": "Cordova",
   "projectVersion": "1",
   "WP8WindowsPublisherName": "CN=Telerik",
-  "WP8PackageIdentityName": "1234Telerik.com.telerik.plugindemo.localnotificati"
+  "WP8PackageIdentityName": "1234Telerik.com.telerik.plugindemo.localnotificati",
+  "AndroidVersionCode": "2"
 }
