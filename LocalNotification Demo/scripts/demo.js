@@ -11,11 +11,16 @@
 								autoClear: true
             });
     
-					 	window.plugin.notification.local.on("schedule", function (id, state, json) {
+					 	window.plugin.notification.local.on("click", function (id, state, json) {
+                navigator.notification.alert("Clicked: " + id, null, 'Notification background click', 'Close');
+            });
+
+	          window.plugin.notification.local.on("schedule", function (id, state, json) {
                 navigator.notification.alert("Scheduled", null, 'Notification scheduled', 'Close');
             });
 
-            window.plugin.notification.local.on("trigger", function (notification, state) {
+           	// On iOS this event doesn't fire when the app is coldstarted, use "click" above instead in that case
+	          window.plugin.notification.local.on("trigger", function (notification, state) {
                 var message = 'Notification with ID is triggered: ' + notification.id + ' state: ' + state;
 								navigator.notification.alert(message, function() { // callback invoked when the alert dialog is dismissed
 				    			cordova.plugins.notification.local.clear(notification.id, function() {
