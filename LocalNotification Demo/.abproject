@@ -4,7 +4,7 @@
   "AppIdentifier": "com.telerik.plugindemo.localnotification",
   "ProjectName": "LocalNotification Demo",
   "IsRunnable": "true",
-  "FrameworkVersion": "3.8.0",
+  "FrameworkVersion": "4.0.0",
   "AndroidPermissions": [
     "android.permission.ACCESS_NETWORK_STATE",
     "android.permission.ACCOUNT_MANAGER",
@@ -15,19 +15,19 @@
     "android.permission.WRITE_EXTERNAL_STORAGE"
   ],
   "CorePlugins": [
-    "org.apache.cordova.console",
-    "org.apache.cordova.device",
-    "org.apache.cordova.network-information",
-    "org.apache.cordova.dialogs",
-    "org.apache.cordova.splashscreen",
-    "org.apache.cordova.statusbar"
+    "cordova-plugin-console",
+    "cordova-plugin-crosswalk-webview@1.2.0",
+    "cordova-plugin-dialogs",
+    "cordova-plugin-network-information",
+    "cordova-plugin-splashscreen",
+    "cordova-plugin-statusbar"
   ],
   "DeviceOrientations": [
     "Portrait",
     "Landscape"
   ],
   "iOSStatusBarStyle": "Default",
-  "AndroidHardwareAcceleration": "false",
+  "AndroidHardwareAcceleration": "true",
   "WP8SupportedResolutions": [
     "ID_RESOLUTION_WVGA",
     "ID_RESOLUTION_WXGA",
@@ -48,5 +48,6 @@
   "projectVersion": "1",
   "WP8WindowsPublisherName": "CN=Telerik",
   "WP8PackageIdentityName": "1234Telerik.com.telerik.plugindemo.localnotificati",
-  "AndroidVersionCode": "2"
+  "AndroidVersionCode": "2",
+  "CordovaPluginVariables": {}
 }
