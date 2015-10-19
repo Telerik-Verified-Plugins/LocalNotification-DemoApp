@@ -21,7 +21,7 @@
     "cordova-plugin-network-information",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
-    "de.appplant.cordova.plugin.local-notification@0.8.2dev3"
+    "de.appplant.cordova.plugin.local-notification@0.8.2dev4"
   ],
   "DeviceOrientations": [
     "Portrait",
