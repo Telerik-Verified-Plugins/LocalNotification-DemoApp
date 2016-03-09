@@ -21,7 +21,7 @@
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "cordova-plugin-whitelist",
-    "de.appplant.cordova.plugin.local-notification@0.8.2"
+    "de.appplant.cordova.plugin.local-notification@0.8.4"
   ],
   "DeviceOrientations": [
     "Portrait",
@@ -34,7 +34,7 @@
     "ID_RESOLUTION_WXGA",
     "ID_RESOLUTION_HD720P"
   ],
-  "BundleVersion": "1.1.0",
+  "BundleVersion": "1.1.1",
   "Description": "LocalNotification Demo",
   "DisplayName": "LocalNotification plugin demo",
   "Author": "Telerik",
@@ -49,6 +49,7 @@
   "projectVersion": "1",
   "WP8WindowsPublisherName": "CN=Telerik",
   "WP8PackageIdentityName": "1234Telerik.com.telerik.plugindemo.localnotificati",
-  "AndroidVersionCode": "2",
-  "CordovaPluginVariables": {}
+  "AndroidVersionCode": "3",
+  "CordovaPluginVariables": {},
+  "iOSDeploymentTarget": "7.0"
 }
